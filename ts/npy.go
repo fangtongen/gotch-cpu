@@ -11,7 +11,7 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/sugarme/gotch"
+	"github.com/fangtongen/gotch-cpu"
 )
 
 const (

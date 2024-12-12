@@ -4,8 +4,8 @@ import (
 	"math/rand"
 	"time"
 
-	"github.com/sugarme/gotch/nn"
-	"github.com/sugarme/gotch/ts"
+	"github.com/fangtongen/gotch-cpu/nn"
+	"github.com/fangtongen/gotch-cpu/ts"
 )
 
 // Transformer is an interface that can transform an image tensor.

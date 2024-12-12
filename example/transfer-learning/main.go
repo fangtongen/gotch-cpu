@@ -9,10 +9,10 @@ import (
 	"log"
 	"path/filepath"
 
-	"github.com/sugarme/gotch"
-	"github.com/sugarme/gotch/nn"
-	"github.com/sugarme/gotch/ts"
-	"github.com/sugarme/gotch/vision"
+	"github.com/fangtongen/gotch-cpu"
+	"github.com/fangtongen/gotch-cpu/nn"
+	"github.com/fangtongen/gotch-cpu/ts"
+	"github.com/fangtongen/gotch-cpu/vision"
 )
 
 var (

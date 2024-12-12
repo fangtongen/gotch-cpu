@@ -3,8 +3,8 @@ package nn
 // A sequential layer used to chain multiple layers and closures.
 
 import (
-	"github.com/sugarme/gotch"
-	"github.com/sugarme/gotch/ts"
+	"github.com/fangtongen/gotch-cpu"
+	"github.com/fangtongen/gotch-cpu/ts"
 )
 
 // Sequential is a layer (container) that combines multiple other layers.

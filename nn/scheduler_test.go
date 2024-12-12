@@ -6,8 +6,8 @@ import (
 	"math"
 	"testing"
 
-	"github.com/sugarme/gotch"
-	"github.com/sugarme/gotch/nn"
+	"github.com/fangtongen/gotch-cpu"
+	"github.com/fangtongen/gotch-cpu/nn"
 )
 
 func TestLambdaLR(t *testing.T) {

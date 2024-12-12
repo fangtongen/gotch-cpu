@@ -3,8 +3,8 @@ package vision
 // InceptionV3
 
 import (
-	"github.com/sugarme/gotch/nn"
-	"github.com/sugarme/gotch/ts"
+	"github.com/fangtongen/gotch-cpu/nn"
+	"github.com/fangtongen/gotch-cpu/ts"
 )
 
 func convBn(p *nn.Path, cIn, cOut, ksize, pad, stride int64) ts.ModuleT {

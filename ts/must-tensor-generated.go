@@ -5,7 +5,7 @@ package ts
 import(
   "log"
 
-  "github.com/sugarme/gotch"
+  "github.com/fangtongen/gotch-cpu"
 )
 
 

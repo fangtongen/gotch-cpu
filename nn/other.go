@@ -1,7 +1,7 @@
 package nn
 
 import (
-	"github.com/sugarme/gotch/ts"
+	"github.com/fangtongen/gotch-cpu/ts"
 )
 
 // Dropout:

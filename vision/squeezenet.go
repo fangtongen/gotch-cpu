@@ -3,8 +3,8 @@ package vision
 // SqueezeNet implementation.
 
 import (
-	"github.com/sugarme/gotch/nn"
-	"github.com/sugarme/gotch/ts"
+	"github.com/fangtongen/gotch-cpu/nn"
+	"github.com/fangtongen/gotch-cpu/ts"
 )
 
 func snMaxPool2D(xs *ts.Tensor) *ts.Tensor {

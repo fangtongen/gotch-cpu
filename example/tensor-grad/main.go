@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 
-	"github.com/sugarme/gotch/ts"
+	"github.com/fangtongen/gotch-cpu/ts"
 )
 
 func main() {

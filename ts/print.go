@@ -7,7 +7,7 @@ import (
 	"reflect"
 	"strconv"
 
-	"github.com/sugarme/gotch"
+	"github.com/fangtongen/gotch-cpu"
 )
 
 func (ts *Tensor) ValueGo() interface{} {

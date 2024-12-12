@@ -4,9 +4,9 @@ import (
 	"fmt"
 	"log"
 
-	"github.com/sugarme/gotch"
-	"github.com/sugarme/gotch/ts"
-	"github.com/sugarme/gotch/vision"
+	"github.com/fangtongen/gotch-cpu"
+	"github.com/fangtongen/gotch-cpu/ts"
+	"github.com/fangtongen/gotch-cpu/vision"
 )
 
 type ResizeModule struct {

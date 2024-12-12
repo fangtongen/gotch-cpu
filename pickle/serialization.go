@@ -20,9 +20,9 @@ import (
 	"reflect"
 	"sort"
 
-	"github.com/sugarme/gotch"
-	"github.com/sugarme/gotch/nn"
-	"github.com/sugarme/gotch/ts"
+	"github.com/fangtongen/gotch-cpu"
+	"github.com/fangtongen/gotch-cpu/nn"
+	"github.com/fangtongen/gotch-cpu/ts"
 )
 
 const hexMagicNumber = "1950a86a20f9469cfc6c"

@@ -3,7 +3,7 @@ package nn
 // Sparse layers
 
 import (
-	"github.com/sugarme/gotch/ts"
+	"github.com/fangtongen/gotch-cpu/ts"
 )
 
 // Configuration option for an embedding layer.

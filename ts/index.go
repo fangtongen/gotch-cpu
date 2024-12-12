@@ -66,7 +66,7 @@ import (
 	"log"
 	"reflect"
 
-	"github.com/sugarme/gotch"
+	"github.com/fangtongen/gotch-cpu"
 )
 
 type NewAxis struct{}

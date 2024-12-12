@@ -3,7 +3,7 @@ package main
 import (
 	"flag"
 
-	"github.com/sugarme/gotch"
+	"github.com/fangtongen/gotch-cpu"
 )
 
 var (

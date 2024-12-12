@@ -1,12 +1,12 @@
 #!/bin/bash
 
-GOTCH_VERSION="${GOTCH_VER:-v0.9.0}"
+GOTCH_VERSION="${GOTCH_VER:-v0.0.1}"
 CUDA_VERSION="${CUDA_VER:-11.8}"
 
 if [ -z $GOPATH ]; then
   GOPATH="$HOME/go"
 fi
-GOTCH_PATH="$GOPATH/pkg/mod/github.com/sugarme/gotch@$GOTCH_VERSION"
+GOTCH_PATH="$GOPATH/pkg/mod/github.com/fangtongen/gotch-cpu@$GOTCH_VERSION"
 
 # Install gotch
 #==============
@@ -21,8 +21,8 @@ if [ -d $GOTCH_TEST_DIR ]; then
 fi
 mkdir $GOTCH_TEST_DIR
 cd $GOTCH_TEST_DIR
-go mod init "github.com/sugarme/gotch-test"
-go get -d "github.com/sugarme/gotch@$GOTCH_VERSION" 
+go mod init "github.com/fangtongen/gotch-cpu-test"
+go get -d "github.com/fangtongen/gotch-cpu@$GOTCH_VERSION" 
 rm -rf $GOTCH_TEST_DIR
 cd $cwd
 

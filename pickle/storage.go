@@ -6,8 +6,8 @@ import (
 	"io"
 	"math"
 
-	"github.com/sugarme/gotch"
-	"github.com/sugarme/gotch/half"
+	"github.com/fangtongen/gotch-cpu"
+	"github.com/fangtongen/gotch-cpu/half"
 )
 
 // This file implements Pytorch storage data types.
