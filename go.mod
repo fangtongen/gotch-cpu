@@ -1,4 +1,4 @@
-module github.com/sugarme/gotch
+module github.com/fangtongen/gotch-cpu
 
 go 1.20
 
