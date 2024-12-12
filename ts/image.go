@@ -5,7 +5,7 @@ import "C"
 import (
 	// "unsafe"
 
-	lib "github.com/sugarme/gotch/libtch"
+	lib "github.com/fangtongen/gotch-cpu/libtch"
 )
 
 // LoadHwc returns a tensor of shape [height, width, channels] on success.
