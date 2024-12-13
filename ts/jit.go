@@ -413,8 +413,8 @@ func (iv *IValue) ToCIValue() (*CIValue, error) {
 				}
 				cvals = append(
 					cvals,
-					kCIVal,
-					vCIVal,
+					kCIVal.civalue,
+					vCIVal.civalue,
 				)
 			}
 
