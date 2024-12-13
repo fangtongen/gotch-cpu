@@ -402,17 +402,20 @@ func (iv *IValue) ToCIValue() (*CIValue, error) {
 			log.Println("Yang: GenericDict key type is int64 and value type is *Tensor")
 
 			var m = iv.value.(map[int64]*Tensor)
-			var vals []int64
 			for k, v := range m {
-				vals = append(vals, k, v.ctensor)
-			}
-			for _, v := range vals {
-				ival := NewIValue(v)
-				cval, err := ival.ToCIValue()
+				kCIVal, err := NewIValue(k).ToCIValue()
 				if err != nil {
 					log.Fatalf("ToCIValue method call err - GenericDict case: %v\n", err)
 				}
-				cvals = append(cvals, cval.civalue)
+				vCIVal, err := NewIValue(v).ToCIValue()
+				if err != nil {
+					log.Fatalf("ToCIValue method call err - GenericDict case: %v\n", err)
+				}
+				cvals = append(
+					cvals,
+					kCIVal,
+					vCIVal,
+				)
 			}
 
 		// TODO: map[float64]Tensor
