@@ -859,6 +859,12 @@ func AtmForward(m Cmodule, tensors *Ctensor, ntensors int) Ctensor {
 	return C.atm_forward(m, tensors, cntensors)
 }
 
+// tensor atm_forward_2dim(module, tensor *tensors, int ntensors);
+func AtmForward2Dim(m Cmodule, tensors *Ctensor, ntensors int) Ctensor {
+	cntensors := *(*C.int)(unsafe.Pointer(&ntensors))
+	return C.atm_forward_2dim(m, tensors, cntensors)
+}
+
 // ivalue atm_forward_(module, ivalue *ivalues, int nivalues);
 func AtmForward_(m Cmodule, ivalues *Civalue, nivalues int) Civalue {
 	cnivalues := *(*C.int)(unsafe.Pointer(&nivalues))

@@ -393,7 +393,10 @@ func (iv *IValue) ToCIValue() (*CIValue, error) {
 			}
 
 		// TODO: map[int64]Tensor
-		// TODO: map[int64]*Tensor
+		/*
+			TODO: map[int64]*Tensor, 传入后会有问题：
+				Failed to perform inference: Libtorch API Error: forward() Expected a value of type 'Dict[int, Tensor]' for argument 'x_input' but instead found type 'Dict[Any, Any]'.
+		*/
 		case keyType == "int64" && valType == "ptr":
 			elemType := reflect.TypeOf(iv.value).Elem().Elem().Name()
 			if elemType != "Tensor" {
@@ -1075,13 +1078,94 @@ func (cm *CModule) ForwardTs(tensors []*Tensor) (*Tensor, error) {
 	// - `dataPtr` is the pointer to slice of ctensor pointers
 	// - `nsize` is number of ctensor pointers encoded in binary data.
 	ctensorsPtr := (*lib.Ctensor)(dataPtr)
-	ctensor := lib.AtmForward(cm.Cmodule, ctensorsPtr, len(ctensors))
+	//ctensor := lib.AtmForward(cm.Cmodule, ctensorsPtr, len(ctensors))
+	ctensor := lib.AtmForward2Dim(cm.Cmodule, ctensorsPtr, len(ctensors))
 	if err := TorchErr(); err != nil {
 		return nil, err
 	}
 
 	return newTensor(ctensor), nil
 }
+
+//// ForwardTs performs the forward pass for a model on some specified tensor list inputs.
+//func (cm *CModule) ForwardTss(tensors [][]*Tensor) (*Tensor, error) {
+//	var ctensorsArrArr [][]lib.Ctensor
+//	dimOneLen := 0
+//	dimTwoLen := 0
+//
+//	for _, ts := range tensors {
+//		var tCtensors []lib.Ctensor
+//		tDimTowLen := 0
+//		for _, t := range ts {
+//			tCtensors = append(tCtensors, t.ctensor)
+//			tDimTowLen += 1
+//		}
+//		if dimTwoLen == 0 {
+//			dimTwoLen = tDimTowLen
+//		} else if tDimTowLen != dimTwoLen {
+//			return nil, fmt.Errorf("Unexpected tensor list length (%v) for dim 2.\n", tDimTowLen)
+//		}
+//		dimOneLen += 1
+//		ctensorsArrArr = append(ctensorsArrArr, tCtensors)
+//	}
+//
+//	// NOTE: Write a slice of ctensors to C memory and get the pointer
+//	// 1. Calculate buffer size
+//	// 外部数组的指针数组
+//	anbytes := 8 * dimOneLen // 固定成 8 bytes，64bit 系统
+//	aDataPtr := C.malloc(C.size_t(anbytes))
+//	defer C.free(aDataPtr)
+//	aDataSlice := (*[1 << 30]byte)(aDataPtr)[:anbytes:anbytes]
+//
+//	var aData []byte
+//	for _, ctensors := range ctensorsArrArr {
+//		cptrSize := int(unsafe.Sizeof(ctensors[0])) // 8 bytes
+//		nbytes := cptrSize * dimTwoLen
+//		dataPtr := C.malloc(C.size_t(nbytes)) // 存放内部的 tensor 指针数组
+//
+//		defer C.free(dataPtr) // 这里会释放分配动动态内存空间
+//		dataSlice := (*[1 << 30]byte)(dataPtr)[:nbytes:nbytes]
+//
+//		// 2. Convert C pointers to []byte
+//		var data []byte
+//		for _, ctensor := range ctensors {
+//			b := make([]byte, cptrSize)
+//			u := uintptr(unsafe.Pointer(ctensor))
+//			switch cptrSize {
+//			case 4:
+//				binary.LittleEndian.PutUint32(b, uint32(u))
+//			case 8:
+//				binary.LittleEndian.PutUint64(b, uint64(u))
+//			default:
+//				panic(fmt.Sprintf("unknown uintptr size: %v", cptrSize))
+//			}
+//
+//			data = append(data, b...)
+//		}
+//
+//		// 3. Copy data to buffer
+//		copy(dataSlice[:], data)
+//
+//		//
+//		aB := make([]byte, 8)
+//		aU := uintptr(unsafe.Pointer(dataPtr))
+//		binary.LittleEndian.PutUint64(aB, uint64(aU))
+//		aData = append(aData, aB...)
+//	}
+//	copy(aDataSlice[:], aData)
+//
+//	// 4. Call C func with slice data pointer and number of ctensor pointers
+//	// NOTE:
+//	// - `dataPtr` is the pointer to slice of ctensor pointers
+//	// - `nsize` is number of ctensor pointers encoded in binary data.
+//	ctensorsPtr := (*lib.Ctensor)(aDataPtr)
+//	ctensor := lib.AtmForward(cm.Cmodule, ctensorsPtr, len(ctensors))
+//	if err := TorchErr(); err != nil {
+//		return nil, err
+//	}
+//
+//	return newTensor(ctensor), nil
+//}
 
 // ForwardIs performs the forward pass for a model on some specified ivalue input.
 func (cm *CModule) ForwardIs(ivalues []*IValue) (*IValue, error) {
