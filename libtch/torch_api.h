@@ -169,7 +169,7 @@ module atm_load_on_device(char *, int device);
 module atm_load_str(char *, size_t sz);
 module atm_load_str_on_device(char *, size_t sz, int device);
 tensor atm_forward(module, tensor *tensors, int ntensors);
-tensor atm_forward_2dim(module, tensor *tensors, int ntensors);
+tensor atm_forward_list(module, tensor *tensors, int ntensors);
 ivalue atm_forward_(module, ivalue *ivalues, int nivalues);
 tensor atm_method(module, char *method_name, tensor *tensors, int ntensors);
 ivalue atm_method_(module, char *method_name, ivalue *ivalues, int nivalues);

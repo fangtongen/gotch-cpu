@@ -821,13 +821,17 @@ tensor atm_forward(module m, tensor *tensors, int ntensors) {
 }
 
 
-tensor atm_forward_2dim(module m, tensor *tensors, int ntensors) {
+tensor atm_forward_list(module m, tensor *tensors, int ntensors) {
   PROTECT(
-              std::vector<torch::jit::IValue> inputsv;
-            for (int i = 0; i < ntensors; ++i) inputsv.push_back(*(tensors[i]));
-            torch::IValue input_ivalue = torch::ivalue::Tuple::create(inputsv);
+//              std::vector<torch::jit::IValue> inputsv;
+//            for (int i = 0; i < ntensors; ++i) inputsv.push_back(*(tensors[i]));
+//            torch::IValue input_ivalue = torch::ivalue::Tuple::create(inputsv);
+
+            torch::List<torch::Tensor> input_list;
+            for (int i = 0; i < ntensors; ++i) input_list.push_back(*(tensors[i]));
+
             std::vector<torch::IValue> inputs;
-            inputs.push_back(input_ivalue);
+            inputs.push_back(input_list);
             // input 为 'Tuple[Tensor]'
           torch::jit::IValue output = m->forward(std::move(inputs));
           if (!output.isTensor()) throw std::invalid_argument(

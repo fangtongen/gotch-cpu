@@ -1079,7 +1079,7 @@ func (cm *CModule) ForwardTs(tensors []*Tensor) (*Tensor, error) {
 	// - `nsize` is number of ctensor pointers encoded in binary data.
 	ctensorsPtr := (*lib.Ctensor)(dataPtr)
 	//ctensor := lib.AtmForward(cm.Cmodule, ctensorsPtr, len(ctensors))
-	ctensor := lib.AtmForward2Dim(cm.Cmodule, ctensorsPtr, len(ctensors))
+	ctensor := lib.AtmForwardList(cm.Cmodule, ctensorsPtr, len(ctensors))
 	if err := TorchErr(); err != nil {
 		return nil, err
 	}
