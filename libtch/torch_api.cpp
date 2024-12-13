@@ -825,7 +825,7 @@ tensor atm_forward_list(module m, tensor *tensors, int ntensors) {
   PROTECT(
 //              std::vector<torch::jit::IValue> inputsv;
 //            for (int i = 0; i < ntensors; ++i) inputsv.push_back(*(tensors[i]));
-//            torch::IValue input_ivalue = torch::ivalue::Tuple::create(inputsv);
+//            torch::IValue input_ivalue = torch::ivalue::Tuple::create(inputsv); // 这个输入是 tuple 不是 list
 
             torch::List<torch::Tensor> input_list;
             for (int i = 0; i < ntensors; ++i) input_list.push_back(*(tensors[i]));

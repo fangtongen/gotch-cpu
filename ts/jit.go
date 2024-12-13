@@ -1078,6 +1078,54 @@ func (cm *CModule) ForwardTs(tensors []*Tensor) (*Tensor, error) {
 	// - `dataPtr` is the pointer to slice of ctensor pointers
 	// - `nsize` is number of ctensor pointers encoded in binary data.
 	ctensorsPtr := (*lib.Ctensor)(dataPtr)
+	ctensor := lib.AtmForward(cm.Cmodule, ctensorsPtr, len(ctensors))
+	if err := TorchErr(); err != nil {
+		return nil, err
+	}
+
+	return newTensor(ctensor), nil
+}
+
+// ForwardTs performs the forward pass for a model on some specified tensor inputs.
+func (cm *CModule) ForwardTsl(tensors []*Tensor) (*Tensor, error) {
+	var ctensors []lib.Ctensor
+	for _, t := range tensors {
+		ctensors = append(ctensors, t.ctensor)
+	}
+
+	// NOTE: Write a slice of ctensors to C memory and get the pointer
+	// 1. Calculate buffer size
+	cptrSize := int(unsafe.Sizeof(ctensors[0])) // 8 bytes
+	nbytes := cptrSize * len(ctensors)
+	dataPtr := C.malloc(C.size_t(nbytes))
+	defer C.free(dataPtr)
+	dataSlice := (*[1 << 30]byte)(dataPtr)[:nbytes:nbytes]
+
+	// 2. Convert C pointers to []byte
+	var data []byte
+	for _, ctensor := range ctensors {
+		b := make([]byte, cptrSize)
+		u := uintptr(unsafe.Pointer(ctensor))
+		switch cptrSize {
+		case 4:
+			binary.LittleEndian.PutUint32(b, uint32(u))
+		case 8:
+			binary.LittleEndian.PutUint64(b, uint64(u))
+		default:
+			panic(fmt.Sprintf("unknown uintptr size: %v", cptrSize))
+		}
+
+		data = append(data, b...)
+	}
+
+	// 3. Copy data to buffer
+	copy(dataSlice[:], data)
+
+	// 4. Call C func with slice data pointer and number of ctensor pointers
+	// NOTE:
+	// - `dataPtr` is the pointer to slice of ctensor pointers
+	// - `nsize` is number of ctensor pointers encoded in binary data.
+	ctensorsPtr := (*lib.Ctensor)(dataPtr)
 	//ctensor := lib.AtmForward(cm.Cmodule, ctensorsPtr, len(ctensors))
 	ctensor := lib.AtmForwardList(cm.Cmodule, ctensorsPtr, len(ctensors))
 	if err := TorchErr(); err != nil {
