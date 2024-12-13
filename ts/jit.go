@@ -393,6 +393,28 @@ func (iv *IValue) ToCIValue() (*CIValue, error) {
 			}
 
 		// TODO: map[int64]Tensor
+		// TODO: map[int64]*Tensor
+		case keyType == "int64" && valType == "ptr":
+			elemType := reflect.TypeOf(iv.value).Elem().Elem().Name()
+			if elemType != "Tensor" {
+				log.Fatalf("ToCIValue method call - GenericDict case: unsupported type(%v)\n", elemType)
+			}
+			log.Println("Yang: GenericDict key type is int64 and value type is *Tensor")
+
+			var m = iv.value.(map[int64]*Tensor)
+			var vals []int64
+			for k, v := range m {
+				vals = append(vals, k, v.ctensor)
+			}
+			for _, v := range vals {
+				ival := NewIValue(v)
+				cval, err := ival.ToCIValue()
+				if err != nil {
+					log.Fatalf("ToCIValue method call err - GenericDict case: %v\n", err)
+				}
+				cvals = append(cvals, cval.civalue)
+			}
+
 		// TODO: map[float64]Tensor
 		// TODO: map[string]Tensor
 		// TODO: map[bool]Tensor
